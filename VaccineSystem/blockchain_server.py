@@ -36,7 +36,6 @@ def mine():
         sender = "0",
         recipient = node_identifier,
         amount = 1,
-        pressure = 0,
         latitude = 0,
         altitude = 0,
         x_axis_acceler = 0,
@@ -65,13 +64,13 @@ def new_transaction():
     values = request.get_json()
 
     #check that the required fields are in the POST'ed data
-    required = ['sender', 'recipient', 'amount', 'pressure', 'latitude', 'altitude', 'x_axis_acceeler', 'y_axis_acceler', 'z_axis_acceler', 'humidity', 'temperature', 'lx']
+    required = ['sender', 'recipient', 'amount', 'latitude', 'altitude', 'x_axis_acceeler', 'y_axis_acceler', 'z_axis_acceler', 'humidity', 'temperature', 'lx']
     if not all(k in values for k in required):
         return 'Missing values', 400
 
     #create a new transaction
     index = blockchain.new_transaction(values['sender'],  values['recipient'], values['amount'],
-                                       values['pressure'], values['latitude'], values['altitude'], values['x_axis_acceeler'], values['y_axis_acceler'],
+                                       values['latitude'], values['altitude'], values['x_axis_acceeler'], values['y_axis_acceler'],
                                        values['z_axis_acceler'], values['humidity'], values['temperature'], values['lx'])
     response = {'message': f'Transaction will be added to Block {index}'}
     return jsonify(response), 201
