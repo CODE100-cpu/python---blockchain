@@ -9,6 +9,7 @@ import ssl
 class Blockchain(object):
     def __init__(self):
         # Setup MongoClient
+        # self.client = MongoClient("mongodb+srv://<username>:<password>@cluster0.86rir.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", ssl_cert_reqs=ssl.CERT_NONE)
         self.client = MongoClient("mongodb+srv://minghui:minghui@cluster0.86rir.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", ssl_cert_reqs=ssl.CERT_NONE)
 
         # Connect to blockchain database
@@ -21,10 +22,13 @@ class Blockchain(object):
         self.current_transactions = []
         self.nodes = set()
 
-        #create the genesis block, changed a little bit
+        #create the genesis block
         genesis_block = self.new_block(proof = 100, previous_hash = '1')
-        # self.blocks.insert_one(genesis_block)
-        print("The Genesis block is created!")
+        print("genesis block=", genesis_block)
+        self.blocks.insert_one(genesis_block)
+        genesis_block.pop('_id')
+
+    print("The Genesis block is created!")
 
     def register_node(self, address):
         """
@@ -66,13 +70,6 @@ class Blockchain(object):
 
         self.chain.append(block)
         print("generate a new block")
-        # Insert to the database
-        # t = threading.Thread(target=self.blocks.insert_one(block))
-        # t.start()
-        # t.join()
-        # time.sleep(1)
-        # self.blocks.insert_one(block)
-        # print("insert a new block")
         print(block)
         return block
 

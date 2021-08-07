@@ -50,6 +50,9 @@ def mine():
     #forge the new Block by adding it to the chain
     previous_hash = blockchain.hash(last_block)
     block = blockchain.new_block(proof, previous_hash)
+    blockchain.blocks.insert_one(block)
+    block.pop('_id')
+
     response = {
         'message': "New Block Forged",
         'index': block['index'],
