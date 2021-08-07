@@ -36,6 +36,14 @@ def mine():
         sender = "0",
         recipient = node_identifier,
         amount = 1,
+        latitude = 0, 
+        altitude = 0, 
+        x_axis_acceler = 0, 
+        y_axis_acceler = 0,
+        z_axis_acceler = 0, 
+        humidity = 0, 
+        temperature = 0, 
+        lx = 0,
     )
 
     #forge the new Block by adding it to the chain
