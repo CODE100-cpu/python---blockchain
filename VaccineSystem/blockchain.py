@@ -140,7 +140,7 @@ class Blockchain(object):
         return False
 
 
-    def new_transaction(self, sender, recipient, amount, latitude, altitude, x_axis_acceler, y_axis_acceler,
+    def new_transaction(self, sender, recipient, amount, longitude, latitude, x_axis_acceler, y_axis_acceler,
                         z_axis_acceler, humidity, temperature, lx):
         """
         add a new transaction to the list of transactions
@@ -156,8 +156,8 @@ class Blockchain(object):
             'sender': sender,
             'recipient': recipient,
             'amount': amount,
+            'longitude': longitude,
             'latitude': latitude,
-            'altitude': altitude,
             'x_axis_acceler': x_axis_acceler,
             'y_axis_acceler': y_axis_acceler,
             'z_axis_acceler': z_axis_acceler,
