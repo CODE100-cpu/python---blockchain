@@ -7,6 +7,9 @@ from blockchain import Blockchain
 app = Flask(__name__)
 # app.json_encoder = MyEncoder
 
+#make the program work
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
+
 #generate a globally unique address for this node
 node_identifier = str(uuid4()).replace('-', '')
 
@@ -36,8 +39,8 @@ def mine():
         sender = "0",
         recipient = node_identifier,
         amount = 1,
+        longitude = 0, 
         latitude = 0, 
-        altitude = 0, 
         x_axis_acceler = 0, 
         y_axis_acceler = 0,
         z_axis_acceler = 0, 
@@ -64,16 +67,16 @@ def mine():
 
 @app.route('/transactions/new', methods = ['POST'])
 def new_transaction():
-    values = request.get_json()
+    values = request.get_json(force=True)
 
     #check that the required fields are in the POST'ed data
-    required = ['sender', 'recipient', 'amount', 'latitude', 'altitude', 'x_axis_acceeler', 'y_axis_acceler', 'z_axis_acceler', 'humidity', 'temperature', 'lx']
+    required = ['sender', 'recipient', 'amount', 'longitude', 'latitude', 'x_axis_acceler', 'y_axis_acceler', 'z_axis_acceler', 'humidity', 'temperature', 'lx']
     if not all(k in values for k in required):
         return 'Missing values', 400
 
     #create a new transaction
     index = blockchain.new_transaction(values['sender'],  values['recipient'], values['amount'],
-                                       values['latitude'], values['altitude'], values['x_axis_acceeler'], values['y_axis_acceler'],
+                                       values['longitude'], values['latitude'], values['x_axis_acceler'], values['y_axis_acceler'],
                                        values['z_axis_acceler'], values['humidity'], values['temperature'], values['lx'])
     response = {'message': f'Transaction will be added to Block {index}'}
     return jsonify(response), 201
@@ -90,7 +93,7 @@ def full_chain():
 
 @app.route('/nodes/register', methods = ['POST'])
 def register_nodes():
-    values = request.get_json()
+    values = request.get_json(force=True)
 
     nodes = values.get('nodes')
     if nodes is None:
